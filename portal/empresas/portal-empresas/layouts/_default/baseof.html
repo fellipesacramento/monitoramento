@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+
+    <link rel="stylesheet" href="{{ "css/style.css" | relURL }}" />
+  </head>
+
+  <body>
+    <header class="top">
+      <div class="wrap top__inner">
+        <a class="brand" href="{{ "/" | relURL }}">{{ site.Title }}</a>
+
+        <nav class="nav">
+          <a href="{{ "/empresas/" | relURL }}">Empresas</a>
+          <a href="{{ "/indice/" | relURL }}">Índice</a>
+          <a href="{{ "/categorias/" | relURL }}">Categorias</a>
+          <a href="{{ "/historico/" | relURL }}">Histórico</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      {{ block "main" . }}{{ end }}
+    </main>
+
+    <footer class="foot">
+      <div class="wrap foot__inner">
+        <span>Atualizado: {{ now.Format "2006-01-02" }}</span>
+      </div>
+    </footer>
+  </body>
+</html>

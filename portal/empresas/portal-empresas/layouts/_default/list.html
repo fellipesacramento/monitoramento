@@ -1,0 +1,78 @@
+{{ define "main" }}
+  <div class="pagehead">
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.description }}<p class="muted">{{ . }}</p>{{ end }}
+  </div>
+
+  {{ if .Content }}
+    <div class="box content">
+      {{ .Content }}
+    </div>
+  {{ end }}
+
+  {{ if eq .Section "empresas" }}
+    <!-- LISTA DE EMPRESAS (painel) -->
+    <div class="panel">
+      <div class="panel__row panel__row--head">
+        <div>Empresa</div>
+        <div>Categoria</div>
+        <div>Afinidade</div>
+        <div>Status</div>
+        <div>Próx. revisão</div>
+      </div>
+
+      {{ range .RegularPages.ByTitle }}
+        <a class="panel__row panel__row--link" href="{{ .RelPermalink }}">
+          <div class="strong">{{ .Params.nome | default .Title }}</div>
+
+          <div>
+            {{ with .Params.categoria }}
+              <span class="badge">{{ . }}</span>
+            {{ else }}
+              <span class="badge badge--ghost">—</span>
+            {{ end }}
+          </div>
+
+          <div>
+            {{ $a := .Params.afinidade | default "" }}
+            {{ $ae := .Params.afinidade_emoji | default "" }}
+            {{ if or $a $ae }}
+              <span class="badge">{{ $ae }} {{ $a }}</span>
+            {{ else }}
+              <span class="badge badge--ghost">—</span>
+            {{ end }}
+          </div>
+
+          <div>
+            {{ $s := .Params.status | default "" }}
+            {{ $se := .Params.status_emoji | default "" }}
+            {{ if or $s $se }}
+              <span class="badge">{{ $se }} {{ $s }}</span>
+            {{ else }}
+              <span class="badge badge--ghost">—</span>
+            {{ end }}
+          </div>
+
+          <div class="mono">
+            {{ .Params.proxima_revisao | default "—" }}
+          </div>
+        </a>
+      {{ end }}
+    </div>
+
+  {{ else }}
+    <!-- LISTA GENÉRICA (histórico, categorias, índice, etc.) -->
+    <div class="cards">
+      {{ range .RegularPages.ByDate.Reverse }}
+        <a class="card" href="{{ .RelPermalink }}">
+          <div class="card__title">{{ .Title }}</div>
+          <div class="card__meta muted mono">
+            {{ .Date.Format "2006-01-02" }}
+            {{ with .Params.kind }} · {{ . }}{{ end }}
+          </div>
+          <div class="card__excerpt">{{ .Summary }}</div>
+        </a>
+      {{ end }}
+    </div>
+  {{ end }}
+{{ end }}

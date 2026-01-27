@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Empresas on Radar de Empresas</title>
+    <link>http://localhost:1313/empresas/</link>
+    <description>Recent content in Empresas on Radar de Empresas</description>
+    <generator>Hugo</generator>
+    <language>pt-br</language>
+    <atom:link href="http://localhost:1313/empresas/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title></title>
+      <link>http://localhost:1313/empresas/prodemge/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/empresas/prodemge/</guid>
+      <description>&lt;h1 id=&#34;empresa--prodemge&#34;&gt;Empresa — PRODEMGE&lt;/h1&gt;&#xA;&lt;h2 id=&#34;identificação-verificável&#34;&gt;Identificação (verificável)&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Razão social:&lt;/strong&gt; Companhia de Tecnologia da Informação do Estado de Minas Gerais – PRODEMGE.&lt;br&gt;&#xA;Fonte: Informações Institucionais. :contentReference[oaicite:6]{index=6}&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Atuação:&lt;/strong&gt; empresa de TI do Governo de Minas Gerais.&lt;br&gt;&#xA;Fonte: LinkedIn institucional. :contentReference[oaicite:7]{index=7}&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;enquadramento-estratégico&#34;&gt;Enquadramento estratégico&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Por que acompanhar:&lt;/strong&gt; ambiente enterprise/governo, sistemas críticos, estabilidade e aderência ao meu perfil.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Categoria:&lt;/strong&gt; C1 (Empresa Pública de TI)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;sinais-de-oportunidade-o-que-monitorar&#34;&gt;Sinais de oportunidade (o que monitorar)&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Editais/concursos e comunicados oficiais do Governo/Prodemge&lt;/strong&gt; (quando surgirem). :contentReference[oaicite:8]{index=8}&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Movimentação no LinkedIn&lt;/strong&gt; (novos projetos, iniciativas, vagas, eventos). :contentReference[oaicite:9]{index=9}&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Porta de entrada recorrente:&lt;/strong&gt; Programa de Estágio (para acompanhar movimentação e calendário). :contentReference[oaicite:10]{index=10}&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;networking-mapeamento-inicial&#34;&gt;Networking (mapeamento inicial)&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Começar por: áreas e contatos publicados na estrutura organizacional. :contentReference[oaicite:11]{index=11}&lt;/li&gt;&#xA;&lt;li&gt;Ações mínimas do mês:&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Seguir a página da empresa no LinkedIn&lt;/li&gt;&#xA;&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Seguir 3 perfis-chave (liderança técnica/gestão) encontrados via estrutura/LinkedIn&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;revisão&#34;&gt;Revisão&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Última revisão:&lt;/strong&gt; 2026-01-27&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Próxima revisão:&lt;/strong&gt; 2026-04-27&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+    </item>
+  </channel>
+</rss>
