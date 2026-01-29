@@ -63,6 +63,16 @@ body {
   text-decoration: none;
 }
 
+.brand {
+  font-size: 1.15rem;          /* maior que o menu */
+  font-weight: 700;            /* peso de título */
+  letter-spacing: 0.04em;      /* sensação de marca */
+  text-transform: uppercase;   /* cara de sistema */
+  color: #ffffff;
+  opacity: 0.9;
+}
+
+
 .nav {
   display: flex;
   gap: 18px;
@@ -268,3 +278,69 @@ td.file code {
     padding: 10px 12px;
   }
 }
+
+/* =========================================================
+   MENU PRINCIPAL – FUNDO ESCURO
+   ========================================================= */
+
+.nav a {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.nav a:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* item ativo */
+.nav a.is-active {
+  background: rgba(122, 92, 255, 0.35);
+  border-color: rgba(122, 92, 255, 0.6);
+  font-weight: 600;
+}
+
+/* garante bom espaçamento no header */
+.nav {
+  display: flex;
+  gap: 10px;
+}
+
+/* Header em 2 linhas: título em cima, menu embaixo */
+.top_inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+/* Título com cara de título */
+.brand {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: #fff;
+  opacity: 0.95;
+}
+
+/* Menu alinhado (escolha 1: esquerda) */
+.nav {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Se você preferir o menu à direita, use isso em vez do align-items acima:
+.top_inner { align-items: stretch; }
+.nav { justify-content: flex-end; }
+*/
