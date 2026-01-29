@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
 
-    <link rel="stylesheet" href="{{ "css/style.css" | relURL }}" />
+  
+	<link rel="stylesheet" href="{{ "/css/style.css" | relURL }}?v={{ now.Unix }}">
   </head>
 
   <body>
@@ -22,9 +23,9 @@
       </div>
     </header>
 
-    <main class="wrap">
-      {{ block "main" . }}{{ end }}
-    </main>
+   <main class="wrap site">
+  {{ block "main" . }}{{ end }}
+   </main>
 
     <footer class="foot">
       <div class="wrap foot__inner">
