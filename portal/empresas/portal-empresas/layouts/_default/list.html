@@ -1,78 +1,171 @@
 {{ define "main" }}
-  <div class="pagehead">
+<section class="radar">
+  <header class="radar__header">
     <h1>{{ .Title }}</h1>
-    {{ with .Params.description }}<p class="muted">{{ . }}</p>{{ end }}
+    <p class="radar__subtitle">Visão rápida (status, afinidade e próxima revisão)</p>
+  </header>
+
+  {{/* 
+    LISTA DE EMPRESAS — compatível com Hugo SEM lambda.
+    - Preferência: páginas da seção atual (.Pages)
+    - Fallback: pega todas as páginas da seção "empresas"
+  */}}
+  {{ $pages := .Pages }}
+  {{ if not $pages }}
+    {{ $pages = (where .Site.RegularPages "Section" "empresas") }}
+  {{ end }}
+
+  {{/* Ordem personalizada */}}
+  {{ $statusOrder := dict "alvo" 1 "observacao" 2 "arquivo" 3 "ignorar" 4 }}
+  {{ $afinOrder := dict "alta" 1 "media" 2 "baixa" 3 }}
+
+  {{/* 
+    Monta um slice de dicts pra ordenar sem lambda:
+    { p, statusRank, afinRank, nomeKey }
+  */}}
+  {{ $rows := slice }}
+  {{ range $pages }}
+    {{ $p := . }}
+
+    {{ $status := default "observacao" $p.Params.status }}
+    {{ $sr := 99 }}
+    {{ if isset $statusOrder $status }}{{ $sr = index $statusOrder $status }}{{ end }}
+
+    {{ $afin := default "media" $p.Params.afinidade }}
+    {{ $ar := 99 }}
+    {{ if isset $afinOrder $afin }}{{ $ar = index $afinOrder $afin }}{{ end }}
+
+    {{ $nome := $p.Params.nome }}
+    {{ if not $nome }}{{ $nome = $p.Title }}{{ end }}
+
+    {{ $rows = $rows | append (dict "p" $p "statusRank" $sr "afinRank" $ar "nomeKey" (lower $nome)) }}
+  {{ end }}
+
+  {{/* Ordenação: nome (tie-break), afinidade, status */}}
+  {{ $rows = sort $rows "nomeKey" "asc" }}
+  {{ $rows = sort $rows "afinRank" "asc" }}
+  {{ $rows = sort $rows "statusRank" "asc" }}
+
+  <!-- Desktop / tablet -->
+  <div class="radar__tableWrap">
+    <table class="radar__table">
+      <thead>
+        <tr>
+          <th>Empresa</th>
+          <th>Categoria</th>
+          <th>Afinidade</th>
+          <th>Status</th>
+          <th>Próx. revisão</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range $rows }}
+          {{ $page := .p }}
+
+          {{ $nome := $page.Params.nome }}
+          {{ if not $nome }}{{ $nome = $page.Title }}{{ end }}
+
+          {{ $cat := default "C?" $page.Params.categoria }}
+          {{ $afin := default "media" $page.Params.afinidade }}
+          {{ $afinEmoji := default "" $page.Params.afinidade_emoji }}
+          {{ $status := default "observacao" $page.Params.status }}
+          {{ $statusEmoji := default "" $page.Params.status_emoji }}
+          {{ $rev := default "" $page.Params.proxima_revisao }}
+
+          {{ $afinClass := cond (eq $afin "alta") "badge--ok" (cond (eq $afin "baixa") "badge--bad" "badge--mid") }}
+          {{ $statusClass := cond (eq $status "alvo") "badge--target" (cond (eq $status "arquivo") "badge--archive" (cond (eq $status "ignorar") "badge--ignore" "badge--watch")) }}
+
+          {{ $dateClass := "date" }}
+          {{ if $rev }}
+            {{ if lt (time $rev) now }}
+              {{ $dateClass = "date date--due" }}
+            {{ end }}
+          {{ end }}
+
+          <tr>
+            <td class="name">
+              <a class="radar__link" href="{{ $page.RelPermalink }}">{{ $nome }}</a>
+            </td>
+            <td><span class="badge badge--cat">{{ $cat }}</span></td>
+            <td><span class="badge {{ $afinClass }}">{{ if $afinEmoji }}{{ $afinEmoji }} {{ end }}{{ humanize $afin }}</span></td>
+            <td><span class="badge {{ $statusClass }}">{{ if $statusEmoji }}{{ $statusEmoji }} {{ end }}{{ humanize $status }}</span></td>
+            <td><span class="{{ $dateClass }}">{{ $rev }}</span></td>
+          </tr>
+        {{ end }}
+      </tbody>
+    </table>
   </div>
 
-  {{ if .Content }}
-    <div class="box content">
-      {{ .Content }}
-    </div>
-  {{ end }}
+  <!-- Mobile -->
+  <div class="radar__cards">
+    {{ range $rows }}
+      {{ $page := .p }}
 
-  {{ if eq .Section "empresas" }}
-    <!-- LISTA DE EMPRESAS (painel) -->
-    <div class="panel">
-      <div class="panel__row panel__row--head">
-        <div>Empresa</div>
-        <div>Categoria</div>
-        <div>Afinidade</div>
-        <div>Status</div>
-        <div>Próx. revisão</div>
-      </div>
+      {{ $nome := $page.Params.nome }}
+      {{ if not $nome }}{{ $nome = $page.Title }}{{ end }}
 
-      {{ range .RegularPages.ByTitle }}
-        <a class="panel__row panel__row--link" href="{{ .RelPermalink }}">
-          <div class="strong">{{ .Params.nome | default .Title }}</div>
+      {{ $cat := default "C?" $page.Params.categoria }}
+      {{ $afin := default "media" $page.Params.afinidade }}
+      {{ $afinEmoji := default "" $page.Params.afinidade_emoji }}
+      {{ $status := default "observacao" $page.Params.status }}
+      {{ $statusEmoji := default "" $page.Params.status_emoji }}
+      {{ $rev := default "" $page.Params.proxima_revisao }}
 
-          <div>
-            {{ with .Params.categoria }}
-              <span class="badge">{{ . }}</span>
-            {{ else }}
-              <span class="badge badge--ghost">—</span>
-            {{ end }}
-          </div>
+      {{ $afinClass := cond (eq $afin "alta") "badge--ok" (cond (eq $afin "baixa") "badge--bad" "badge--mid") }}
+      {{ $statusClass := cond (eq $status "alvo") "badge--target" (cond (eq $status "arquivo") "badge--archive" (cond (eq $status "ignorar") "badge--ignore" "badge--watch")) }}
 
-          <div>
-            {{ $a := .Params.afinidade | default "" }}
-            {{ $ae := .Params.afinidade_emoji | default "" }}
-            {{ if or $a $ae }}
-              <span class="badge">{{ $ae }} {{ $a }}</span>
-            {{ else }}
-              <span class="badge badge--ghost">—</span>
-            {{ end }}
-          </div>
-
-          <div>
-            {{ $s := .Params.status | default "" }}
-            {{ $se := .Params.status_emoji | default "" }}
-            {{ if or $s $se }}
-              <span class="badge">{{ $se }} {{ $s }}</span>
-            {{ else }}
-              <span class="badge badge--ghost">—</span>
-            {{ end }}
-          </div>
-
-          <div class="mono">
-            {{ .Params.proxima_revisao | default "—" }}
-          </div>
-        </a>
+      {{ $dueClass := "" }}
+      {{ if $rev }}
+        {{ if lt (time $rev) now }}
+          {{ $dueClass = "card__due" }}
+        {{ end }}
       {{ end }}
-    </div>
 
-  {{ else }}
-    <!-- LISTA GENÉRICA (histórico, categorias, índice, etc.) -->
-    <div class="cards">
-      {{ range .RegularPages.ByDate.Reverse }}
-        <a class="card" href="{{ .RelPermalink }}">
-          <div class="card__title">{{ .Title }}</div>
-          <div class="card__meta muted mono">
-            {{ .Date.Format "2006-01-02" }}
-            {{ with .Params.kind }} · {{ . }}{{ end }}
-          </div>
-          <div class="card__excerpt">{{ .Summary }}</div>
-        </a>
-      {{ end }}
-    </div>
-  {{ end }}
+      <article class="card {{ $dueClass }}">
+        <div class="card__top">
+          <h3><a class="radar__link" href="{{ $page.RelPermalink }}">{{ $nome }}</a></h3>
+          <span class="badge badge--cat">{{ $cat }}</span>
+        </div>
+
+        <div class="card__meta">
+          <span class="badge {{ $afinClass }}">{{ if $afinEmoji }}{{ $afinEmoji }} {{ end }}{{ humanize $afin }}</span>
+          <span class="badge {{ $statusClass }}">{{ if $statusEmoji }}{{ $statusEmoji }} {{ end }}{{ humanize $status }}</span>
+        </div>
+
+        <div class="card__bottom">
+          <span class="muted">Próx. revisão</span>
+          <strong>{{ $rev }}</strong>
+        </div>
+      </article>
+    {{ end }}
+  </div>
+</section>
+
+{{/* 
+  CSS mínimo para garantir:
+  - Tabela aparece no desktop
+  - Cards aparecem só no mobile
+  (mesmo se seu CSS global ainda não tiver essas regras)
+*/}}
+<style>
+  .radar__link { color: inherit; text-decoration: none; }
+  .radar__link:hover { text-decoration: underline; }
+
+  .date--due { font-weight: 700; }
+
+  /* padrão: mostra tabela, esconde cards */
+  .radar__tableWrap { display: block; }
+  .radar__cards { display: none; gap: 12px; }
+
+  /* mobile: esconde tabela, mostra cards */
+  @media (max-width: 720px) {
+    .radar__tableWrap { display: none; }
+    .radar__cards { display: grid; }
+  }
+
+  /* classes de fallback (se não existirem no seu CSS global) */
+  .badge--archive { background: rgba(255,255,255,0.06); }
+  .badge--ignore { background: rgba(255,255,255,0.04); opacity: 0.8; }
+  .card__due { outline: 1px solid rgba(255,255,255,0.16); }
+</style>
 {{ end }}
